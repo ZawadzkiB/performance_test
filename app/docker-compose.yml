@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  producs_us_db:
+    restart: always
+    image: postgres:10
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: root
+      POSTGRES_DB: products_us
+    volumes:
+      - ~/postgresql_products_us:/var/lib/postgresql
+
+  customers_db:
+    restart: always
+    image: postgres:10
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: root
+      POSTGRES_DB: customers
+    volumes:
+      - ~/postgresql_customers:/var/lib/postgresql
+
+  products_eu_db:
+    image: 'bitnami/mongodb:4.0.3'
+    ports:
+      - "27017:27017"
+    volumes:
+      - ~/mongo_products_eu:/bitnami
+
+  products_service_db:
+    image: 'bitnami/mongodb:4.0.3'
+    ports:
+      - "27018:27017"
+    volumes:
+      - ~/mongo_products_service:/bitnami
+  
+  grafana:
+    image: grafana/grafana
+    extra_hosts:
+       - "outside:${HOST_IP}"
+    ports:
+      - 3000:3000
+
+  prometheus:
+    image: 'prom/prometheus:v2.5.0'
+    extra_hosts:
+       - "outside:${HOST_IP}"
+    ports:
+      - 9090:9090
+    volumes:
+    - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+    - '--config.file=/etc/prometheus/prometheus.yml'
