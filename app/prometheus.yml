@@ -34,3 +34,17 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets: ['outside:8801']
+  
+  - job_name: 'customers_api'
+
+    metrics_path: '/api/actuator/prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['outside:8802']
+
+  - job_name: 'order_api'
+
+    metrics_path: '/api/actuator/prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['outside:8803']
