@@ -29,15 +29,13 @@ services:
   
   grafana:
     image: grafana/grafana
-    extra_hosts:
-       - "outside:${HOST_IP}"
+    network_mode: "host"
     ports:
       - 3000:3000
 
   prometheus:
     image: 'prom/prometheus:v2.5.0'
-    extra_hosts:
-       - "outside:${HOST_IP}"
+    network_mode: "host"
     ports:
       - 9090:9090
     volumes:
